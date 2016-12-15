@@ -32,14 +32,14 @@ public class ShopDAO implements DAOPersistable<Shop>{
     private DBHelper dbHelper;
     private SQLiteDatabase db;
 
-    public ShopDAO(WeakReference<Context> context, DBHelper dbHelper ) {
+    public ShopDAO(Context context, DBHelper dbHelper ) {
         this.dbHelper = dbHelper;
-        this.context = context;
+        this.context = new WeakReference<>(context);
         this.db=dbHelper.getDB();
     }
 
-    public ShopDAO(WeakReference<Context> context) {
-        this(context, DBHelper.getInstance(context.get()));
+    public ShopDAO(Context context) {
+        this(context, DBHelper.getInstance(context));
     }
 
 
@@ -127,7 +127,7 @@ public class ShopDAO implements DAOPersistable<Shop>{
     @Nullable
     @Override
     public Cursor queryCursor() {
-        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS, null, null, null, KEY_SHOP_ID, null);
+        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS, null, null,  null,null, KEY_SHOP_ID);
         if (c!=null && c.getCount()>0) {
             c.moveToFirst();
         }
@@ -136,7 +136,7 @@ public class ShopDAO implements DAOPersistable<Shop>{
 
     @Override
     public @Nullable Shop query(final long id) {
-        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS,  KEY_SHOP_ID + " = " + id, null, null, KEY_SHOP_ID, null);
+        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS,  KEY_SHOP_ID + " = " + id, null, null, null, KEY_SHOP_ID);
         if (c!=null && c.getCount() ==1 ) {
             c.moveToFirst();
 
