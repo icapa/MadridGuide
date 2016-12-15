@@ -99,17 +99,18 @@ public class ShopDAO implements DAOPersistable<Shop>{
     }
 
     @Override
-    public void delete(final long id) {
+    public int delete(final long id) {
+        int num=-1;
         db.beginTransaction();
         try {
-            db.delete(TABLE_SHOP, KEY_SHOP_ID + " = " + id, null); // 1s way
+            num= db.delete(TABLE_SHOP, KEY_SHOP_ID + " = " + id, null); // 1s way
             db.setTransactionSuccessful();
         }
         finally {
             db.endTransaction();
         }
         //db.delete(TABLE_SHOP,  KEY_SHOP_ID + " = ?", new String[]{"" + id}); // 2s way
-
+        return num;
     }
 
     @Override
@@ -176,10 +177,10 @@ public class ShopDAO implements DAOPersistable<Shop>{
         }
 
         List<Shop> shops = new LinkedList<>();
-
-        while(c.moveToNext()){
+        c.moveToFirst();
+        do{
             shops.add(getShop(c));
-        }   // left golden path
+        } while(c.moveToNext());  // left golden path
 
         return shops;
     }
