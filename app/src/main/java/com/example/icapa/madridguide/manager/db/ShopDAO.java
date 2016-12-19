@@ -184,4 +184,12 @@ public class ShopDAO implements DAOPersistable<Shop>{
 
         return shops;
     }
+
+    public Cursor queryCursor(long id) {
+        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS, "ID = " + id, null,  null,null, KEY_SHOP_ID);
+        if (c!=null && c.getCount()>0) {
+            c.moveToFirst();
+        }
+        return c;
+    }
 }

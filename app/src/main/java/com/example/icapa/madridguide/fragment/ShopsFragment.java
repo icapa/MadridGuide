@@ -1,4 +1,5 @@
-package com.example.icapa.madridguide;
+package com.example.icapa.madridguide.fragment;
+
 
 
 import android.os.Bundle;
@@ -9,16 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.icapa.madridguide.R;
 import com.example.icapa.madridguide.adapters.ShopsAdapter;
 import com.example.icapa.madridguide.model.Shop;
 import com.example.icapa.madridguide.model.Shops;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class ShopsFragment extends Fragment {
-
+    private Shops shops;
     private RecyclerView shopsRecyclerView;
 
     private ShopsAdapter adapter;
@@ -36,26 +35,32 @@ public class ShopsFragment extends Fragment {
         shopsRecyclerView = (RecyclerView) view.findViewById(R.id.shops_recycler_view);
         shopsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        updateUI();
         return view;
     }
 
+    public Shops getShops() {
+        return shops;
+    }
+
+
     private void updateUI() {
-        Shops shops = Shops.build(getShops());
+
 
         adapter = new ShopsAdapter(shops,getActivity());
         shopsRecyclerView.setAdapter(adapter);
 
+        adapter.setOnElementClickListener(new ShopsAdapter.OnElementClick() {
+            @Override
+            public void clickedOn(Shop shop, int position) {
+                // TODO: show shop detail
+            }
+        });
+
     }
 
-    private List<Shop> getShops(){
-        List<Shop> data = new ArrayList<>();
-
-        for (int i = 0; i < 100; i++) {
-            data.add(new Shop(i,"Tienda " + i));
-        }
-
-        return data;
+    public void setShops(Shops shops) {
+        this.shops = shops;
+        updateUI();
     }
 
 }

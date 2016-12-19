@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.icapa.madridguide">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".MadridGuideApp"
@@ -18,6 +19,13 @@
         </activity>
         <activity android:name=".activities.ShopsActivity">
         </activity>
+
+        <!-- services -->
+
+        <!-- Content provider -->
+        <provider
+            android:authorities="com.example.icapa.madridguide.provider"
+            android:name=".manager.db.provider.MadridGuideProvider" />
     </application>
 
 </manifest>

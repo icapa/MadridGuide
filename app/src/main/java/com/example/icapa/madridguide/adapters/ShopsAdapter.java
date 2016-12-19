@@ -2,6 +2,7 @@ package com.example.icapa.madridguide.adapters;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,16 @@ import com.example.icapa.madridguide.model.Shops;
 import com.example.icapa.madridguide.views.ShopRowViewHolder;
 
 public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
-
     private final LayoutInflater layoutInflater;
     private final Shops mShops;
+
+    // listener interface
+    public interface OnElementClick{
+        public void clickedOn(Shop shop, int position);
+    }
+    private OnElementClick listener;
+
+
 
     public ShopsAdapter(Shops shops, Context context) {
         mShops = shops;
@@ -30,14 +38,16 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ShopRowViewHolder row, int position) {
-        Shop shop = mShops.get(position);
+    public void onBindViewHolder(ShopRowViewHolder row, final int position) {
+        final Shop shop = mShops.get(position);
         row.setShop(shop);
 
         row.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (listener != null){
+                    listener.clickedOn(shop,position);
+                }
             }
         });
 
@@ -46,5 +56,9 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
     @Override
     public int getItemCount() {
         return (int)mShops.size();
+    }
+
+    public void setOnElementClickListener(@NonNull final OnElementClick listener){
+        this.listener = listener;
     }
 }

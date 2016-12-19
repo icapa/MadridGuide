@@ -12,7 +12,7 @@
     tools:context="com.example.icapa.madridguide.activities.ShopsActivity">
 <fragment
     android:id="@+id/activity_shops_fragment_shops"
-    android:name="com.example.icapa.madridguide.ShopsFragment"
+    android:name="com.example.icapa.madridguide.fragment.ShopsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 
