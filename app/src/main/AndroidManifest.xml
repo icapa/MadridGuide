@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.icapa.madridguide">
+
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -22,10 +23,14 @@
 
         <!-- services -->
 
+
         <!-- Content provider -->
         <provider
-            android:authorities="com.example.icapa.madridguide.provider"
-            android:name=".manager.db.provider.MadridGuideProvider" />
+            android:name=".manager.db.provider.MadridGuideProvider"
+            android:authorities="com.example.icapa.madridguide.provider"/>
+
+        <activity android:name=".activities.ShopDetailActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -3,15 +3,14 @@ package com.example.icapa.madridguide;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.icapa.madridguide.interactors.CacheAllShopsInteractor;
+import com.example.icapa.madridguide.interactors.GetAllShopsInteractor;
 import com.example.icapa.madridguide.manager.db.ShopDAO;
-import com.example.icapa.madridguide.manager.net.NetworkManager;
-import com.example.icapa.madridguide.manager.net.ShopEntity;
 import com.example.icapa.madridguide.model.Shop;
-import com.example.icapa.madridguide.model.mappers.ShopEntityShopMapper;
+import com.example.icapa.madridguide.model.Shops;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 
 public class MadridGuideApp extends Application {
@@ -32,21 +31,16 @@ public class MadridGuideApp extends Application {
         Picasso.with(getApplicationContext()).setLoggingEnabled(true);
         Picasso.with(getApplicationContext()).setIndicatorsEnabled(true);
 
-        // testing
-        NetworkManager networkManager = new NetworkManager(getApplicationContext());
-        networkManager.getShopsFromServer(new NetworkManager.GetShopsListener() {
+        new GetAllShopsInteractor().execute(getApplicationContext(), new GetAllShopsInteractor.GetAllShopsInteractorResponse() {
             @Override
-            public void getShopEntitiesSuccess(List<ShopEntity> result) {
-                List<Shop> shops = new ShopEntityShopMapper().map(result);
-                ShopDAO dao = new ShopDAO(appContext.get());
-                for (Shop shop: shops){
-                    dao.insert(shop);
-                }
-            }
+            public void response(Shops shops) {
+                new CacheAllShopsInteractor().execute(getApplicationContext(),
+                    shops, new CacheAllShopsInteractor.CacheAllShopsInteractorResponse() {
+                        @Override
+                        public void response(boolean success) {
 
-            @Override
-            public void getShopEntitiesDidFail() {
-
+                        }
+                    });
             }
         });
 

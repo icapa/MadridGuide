@@ -14,6 +14,8 @@ import com.example.icapa.madridguide.manager.db.ShopDAO;
 import com.example.icapa.madridguide.manager.db.provider.MadridGuideProvider;
 import com.example.icapa.madridguide.model.Shop;
 import com.example.icapa.madridguide.model.Shops;
+import com.example.icapa.madridguide.navigator.Navigator;
+import com.example.icapa.madridguide.views.OnElementClick;
 
 import java.util.List;
 
@@ -75,6 +77,13 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         final Shops shops = ShopDAO.getShops(data);
+
+        mShopsFragment.setListener(new OnElementClick<Shop>() {
+            @Override
+            public void clickedOn(Shop shop, int position) {
+                Navigator.navigateFromShopsActivityToShopDetailActivity(ShopsActivity.this,shop);
+            }
+        });
         mShopsFragment.setShops(shops);
     }
 

@@ -1,8 +1,9 @@
 package com.example.icapa.madridguide.model;
 
 
+import java.io.Serializable;
 
-public class Shop {
+public class Shop implements Serializable{
     private long id;
     private String name;
     private String imageUrl;

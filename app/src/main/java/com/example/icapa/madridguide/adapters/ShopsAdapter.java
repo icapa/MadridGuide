@@ -11,17 +11,15 @@ import android.view.ViewGroup;
 import com.example.icapa.madridguide.R;
 import com.example.icapa.madridguide.model.Shop;
 import com.example.icapa.madridguide.model.Shops;
+import com.example.icapa.madridguide.views.OnElementClick;
 import com.example.icapa.madridguide.views.ShopRowViewHolder;
 
 public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
     private final LayoutInflater layoutInflater;
     private final Shops mShops;
 
-    // listener interface
-    public interface OnElementClick{
-        public void clickedOn(Shop shop, int position);
-    }
-    private OnElementClick listener;
+
+    private OnElementClick<Shop> listener;
 
 
 

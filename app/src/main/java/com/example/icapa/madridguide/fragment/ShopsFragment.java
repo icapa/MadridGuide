@@ -1,7 +1,6 @@
 package com.example.icapa.madridguide.fragment;
 
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +13,7 @@ import com.example.icapa.madridguide.R;
 import com.example.icapa.madridguide.adapters.ShopsAdapter;
 import com.example.icapa.madridguide.model.Shop;
 import com.example.icapa.madridguide.model.Shops;
+import com.example.icapa.madridguide.views.OnElementClick;
 
 
 public class ShopsFragment extends Fragment {
@@ -21,6 +21,16 @@ public class ShopsFragment extends Fragment {
     private RecyclerView shopsRecyclerView;
 
     private ShopsAdapter adapter;
+
+    private OnElementClick<Shop> listener;
+
+    public OnElementClick<Shop> getListener() {
+        return listener;
+    }
+
+    public void setListener(OnElementClick<Shop> listener) {
+        this.listener = listener;
+    }
 
     public ShopsFragment() {
         // Required empty public constructor
@@ -49,10 +59,13 @@ public class ShopsFragment extends Fragment {
         adapter = new ShopsAdapter(shops,getActivity());
         shopsRecyclerView.setAdapter(adapter);
 
-        adapter.setOnElementClickListener(new ShopsAdapter.OnElementClick() {
+        adapter.setOnElementClickListener(new OnElementClick<Shop>() {
             @Override
             public void clickedOn(Shop shop, int position) {
-                // TODO: show shop detail
+                if (listener != null){
+                    listener.clickedOn(shop,position);
+                }
+
             }
         });
 
