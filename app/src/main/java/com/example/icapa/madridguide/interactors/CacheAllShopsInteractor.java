@@ -29,18 +29,7 @@ public class CacheAllShopsInteractor {
                     response.response(sucess);
                 }
 
-                /*
-                Looper main = Looper.getMainLooper();
-                main.getThread(new Runnable(){
 
-                    @Override
-                    public void run() {
-                        if (response!=null){
-                            response.response(sucess);
-                        }
-                    }
-                });
-                */
 
             }
 
@@ -49,3 +38,4 @@ public class CacheAllShopsInteractor {
 
     }
 }
+

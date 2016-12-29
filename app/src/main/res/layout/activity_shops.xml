@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:id="@+id/activity_shops"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,10 +11,22 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.icapa.madridguide.activities.ShopsActivity">
-<fragment
+
+    <fragment
+        android:layout_weight="1"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+
+    <fragment
+        android:layout_weight="1"
     android:id="@+id/activity_shops_fragment_shops"
     android:name="com.example.icapa.madridguide.fragment.ShopsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 
-</RelativeLayout>
+</LinearLayout>
