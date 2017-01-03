@@ -3,11 +3,8 @@ package com.example.icapa.madridguide;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.icapa.madridguide.interactors.CacheAllShopsInteractor;
-import com.example.icapa.madridguide.interactors.GetAllShopsInteractor;
 import com.example.icapa.madridguide.manager.db.ShopDAO;
 import com.example.icapa.madridguide.model.Shop;
-import com.example.icapa.madridguide.model.Shops;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
@@ -31,6 +28,8 @@ public class MadridGuideApp extends Application {
         Picasso.with(getApplicationContext()).setLoggingEnabled(true);
         Picasso.with(getApplicationContext()).setIndicatorsEnabled(true);
 
+        /* Esto era la primera aproximacion */
+        /*
         new GetAllShopsInteractor().execute(getApplicationContext(), new GetAllShopsInteractor.GetAllShopsInteractorResponse() {
             @Override
             public void response(Shops shops) {
@@ -43,6 +42,7 @@ public class MadridGuideApp extends Application {
                     });
             }
         });
+        */
 
     }
 

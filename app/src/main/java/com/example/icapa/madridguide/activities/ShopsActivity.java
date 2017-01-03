@@ -71,7 +71,7 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
 
 
         LoaderManager loaderManager = getSupportLoaderManager();
-
+        loaderManager.initLoader(0,null,this);
 
     }
 
