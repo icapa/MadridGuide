@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.example.icapa.madridguide.manager.db.ShopDAO;
 import com.example.icapa.madridguide.model.Shop;
+import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
@@ -25,8 +26,18 @@ public class MadridGuideApp extends Application {
         //insertTestDataInDB();
 
         // Log de picasso
+
+        Picasso.Builder builder = new Picasso.Builder(appContext.get());
+        builder.downloader(new OkHttpDownloader(appContext.get(),Integer.MAX_VALUE));
+        Picasso built = builder.build();
+        built.setIndicatorsEnabled(true);
+        built.setLoggingEnabled(true);
+        Picasso.setSingletonInstance(built);
+
+        /*
         Picasso.with(getApplicationContext()).setLoggingEnabled(true);
         Picasso.with(getApplicationContext()).setIndicatorsEnabled(true);
+        */
 
         /* Esto era la primera aproximacion */
         /*

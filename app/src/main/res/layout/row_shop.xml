@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/row_shop_logo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/logo_dimension_width"
+        android:layout_height="@dimen/logo_dimension_height"
         android:layout_centerVertical="true"
         tools:src="@android:drawable/btn_plus"
         />
