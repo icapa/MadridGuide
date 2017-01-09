@@ -44,14 +44,7 @@ public class ShopDAO implements DAOPersistable<Shop>{
     }
 
 
-    /**
-     * Insert a shop in database
-     * @param shop shouldn't be null
-     * @return 0 is shop is null, id if insert is ok, INVALID_ID if insert fails
-     */
-
-
-    @Override
+@Override
     public long insert(@NonNull Shop shop) {
         if (shop == null) {
             return 0;
@@ -75,7 +68,8 @@ public class ShopDAO implements DAOPersistable<Shop>{
 
     }
 
-    public static @NonNull ContentValues getContentValues(final @NonNull Shop shop) {
+    public static @NonNull
+    ContentValues getContentValues(final @NonNull Shop shop) {
         final ContentValues contentValues = new ContentValues();
 
         if (shop == null){

@@ -1,4 +1,5 @@
 <resources>
    <string name="shops_url">http://madrid-shops.com/json_new/getShops.php</string>
+   <string name="activities_url">http://madrid-shops.com/json_new/getActivities.php</string>
 </resources>
 

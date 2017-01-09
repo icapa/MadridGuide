@@ -3,8 +3,7 @@ package com.example.icapa.madridguide.manager.net;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ShopEntity {
-
+public class ActivityEntity {
     @SerializedName("id") private Long id;
     @SerializedName("name") private String name;
     @SerializedName("img") private String img;
@@ -45,6 +44,4 @@ public class ShopEntity {
     public String getDescriptionEn() {
         return descriptionEn;
     }
-
-
 }

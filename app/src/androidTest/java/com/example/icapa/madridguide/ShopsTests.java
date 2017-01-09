@@ -32,8 +32,8 @@ public class ShopsTests extends AndroidTestCase {
     @NonNull
     private List<Shop> getShops() {
         List<Shop> data = new ArrayList<>();
-        data.add(new Shop(1,"1").setAddress("AD 1"));
-        data.add(new Shop(1,"2").setAddress("AD 2"));
+        data.add((Shop) new Shop(1,"1").setAddress("AD 1"));
+        data.add((Shop) new Shop(1,"2").setAddress("AD 2"));
         return data;
     }
 }

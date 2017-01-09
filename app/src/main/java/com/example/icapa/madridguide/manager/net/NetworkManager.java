@@ -24,6 +24,11 @@ public class NetworkManager {
         public void getShopEntitiesDidFail();
     }
 
+    public interface GetActivitiesListener{
+        public void getActivityEntitiesSuccess(List<ActivityEntity> result);
+        public void getActivityEntitiesDidFail();
+    }
+
 
     private WeakReference<Context> context;
 
@@ -37,7 +42,7 @@ public class NetworkManager {
         StringRequest request = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                List<ShopEntity> shopResponse = parseResponse(response);
+                List<ShopEntity> shopResponse = parseResponseShops(response);
                 if (listener != null) {
                     listener.getShopEntitiesSuccess(shopResponse);
                 }
@@ -51,11 +56,32 @@ public class NetworkManager {
             }
         });
         queue.add(request);
-
-
     }
 
-    private List<ShopEntity> parseResponse(String response) {
+    public void getActivitiesFromServer(final GetActivitiesListener listener){
+        RequestQueue queue = Volley.newRequestQueue(context.get());
+        String url = context.get().getString(R.string.activities_url);
+        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                List<ActivityEntity> activityResponse = parseResponseActivities(response);
+                if (listener != null) {
+                    listener.getActivityEntitiesSuccess(activityResponse);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (listener != null) {
+                    listener.getActivityEntitiesDidFail();
+                }
+            }
+        });
+        queue.add(request);
+    }
+
+
+    private List<ShopEntity> parseResponseShops(String response) {
         List<ShopEntity> result = null;
         try{
             Reader reader = new StringReader(response);
@@ -67,5 +93,19 @@ public class NetworkManager {
         }
         return result;
     }
+
+    private List<ActivityEntity> parseResponseActivities(String response){
+        List<ActivityEntity> result = null;
+        try{
+            Reader reader = new StringReader(response);
+            Gson gson = new GsonBuilder().create();
+            ActivityResponse activityResponse = gson.fromJson(reader,ActivityResponse.class);
+            result = activityResponse.result;
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
 
 }
