@@ -11,24 +11,24 @@ import android.view.ViewGroup;
 
 import com.example.icapa.madridguide.R;
 import com.example.icapa.madridguide.adapters.ShopsAdapter;
-import com.example.icapa.madridguide.model.Shop;
-import com.example.icapa.madridguide.model.Shops;
+import com.example.icapa.madridguide.model.AnyTopic;
+import com.example.icapa.madridguide.model.AnyTopics;
 import com.example.icapa.madridguide.views.OnElementClick;
 
 
 public class ShopsFragment extends Fragment {
-    private Shops shops;
+    private AnyTopics anyTopics;
     private RecyclerView shopsRecyclerView;
 
     private ShopsAdapter adapter;
 
-    private OnElementClick<Shop> listener;
+    private OnElementClick<AnyTopic> listener;
 
-    public OnElementClick<Shop> getListener() {
+    public OnElementClick<AnyTopic> getListener() {
         return listener;
     }
 
-    public void setListener(OnElementClick<Shop> listener) {
+    public void setListener(OnElementClick<AnyTopic> listener) {
         this.listener = listener;
     }
 
@@ -48,22 +48,22 @@ public class ShopsFragment extends Fragment {
         return view;
     }
 
-    public Shops getShops() {
-        return shops;
+    public AnyTopics getAnyTopics() {
+        return anyTopics;
     }
 
 
     private void updateUI() {
 
 
-        adapter = new ShopsAdapter(shops,getActivity());
+        adapter = new ShopsAdapter(anyTopics,getActivity());
         shopsRecyclerView.setAdapter(adapter);
 
-        adapter.setOnElementClickListener(new OnElementClick<Shop>() {
+        adapter.setOnElementClickListener(new OnElementClick<AnyTopic>() {
             @Override
-            public void clickedOn(Shop shop, int position) {
+            public void clickedOn(AnyTopic anyTopic, int position) {
                 if (listener != null){
-                    listener.clickedOn(shop,position);
+                    listener.clickedOn(anyTopic,position);
                 }
 
             }
@@ -71,8 +71,8 @@ public class ShopsFragment extends Fragment {
 
     }
 
-    public void setShops(Shops shops) {
-        this.shops = shops;
+    public void setTopics(AnyTopics anyTopics) {
+        this.anyTopics = anyTopics;
         updateUI();
     }
 

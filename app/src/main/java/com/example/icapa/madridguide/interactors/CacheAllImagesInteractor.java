@@ -3,38 +3,96 @@ package com.example.icapa.madridguide.interactors;
 
 import android.content.Context;
 
-import com.example.icapa.madridguide.model.Shop;
-import com.example.icapa.madridguide.model.Shops;
+import com.example.icapa.madridguide.model.AnyTopic;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class CacheAllImagesInteractor {
+
+    private final static int NUMBER_OF_IMAGES_TO_DOWNLOAD = 2;
+
     public interface CacheAllImagesInteractorResponse{
         public void response(boolean resp);
     }
-    public void execute(final Context context, final Shops shops, final CacheAllImagesInteractorResponse completion){
+
+    Object semaphoreRemainingCheck = new Object();
+
+    public void execute(final Context context, final List<AnyTopic> anyTopics, final CacheAllImagesInteractorResponse completion){
         new Thread(new Runnable() {
 
-            private void downloadImage(final Shop shop, final Shops shops){
+            private long imageRemaining=anyTopics.size() * NUMBER_OF_IMAGES_TO_DOWNLOAD;
+
+
+
+            private void downloadImage(final AnyTopic anyTopic){
 
                 Picasso.with(context)
-                        .load(shop.getLogoImgUrl())
-                        .fetch();
-
-                Picasso.with(context)
-                        .load(shop.getImageUrl())
+                        .load(anyTopic.getLogoImgUrl())
                         .fetch(new Callback() {
                             @Override
                             public void onSuccess() {
-                                if (shops.get(shops.size()-1) == shop){
-                                    completion.response(true);
+                               synchronized (semaphoreRemainingCheck) {
+                                   imageRemaining--;
+                                   if (imageRemaining == 0) {
+                                       MainThread.run(new Runnable() {
+                                           @Override
+                                           public void run() {
+                                               completion.response(true);
+                                           }
+                                       });
+                                   }
+                               }
+                           }
+
+                           @Override
+                           public void onError() {
+                               synchronized (semaphoreRemainingCheck) {
+                                   imageRemaining--;
+                                   if (imageRemaining == 0) {
+                                       MainThread.run(new Runnable() {
+                                           @Override
+                                           public void run() {
+                                               completion.response(true);
+                                           }
+                                       });
+                                   }
+                               }
+                           }
+                       });
+
+                Picasso.with(context)
+                        .load(anyTopic.getImageUrl())
+                        .fetch(new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                                synchronized (semaphoreRemainingCheck) {
+                                    imageRemaining--;
+                                    if (imageRemaining == 0) {
+                                        MainThread.run(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                completion.response(true);
+                                            }
+                                        });
+                                    }
                                 }
                             }
 
                             @Override
                             public void onError() {
-                                if (shops.get(shops.size()-1) == shop){
-                                    completion.response(true);
+                                synchronized (semaphoreRemainingCheck) {
+                                    imageRemaining--;
+                                    if (imageRemaining == 0) {
+                                        MainThread.run(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                completion.response(true);
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         });
@@ -42,17 +100,10 @@ public class CacheAllImagesInteractor {
             }
             @Override
             public void run() {
-                MainThread.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (Shop shop: shops.allShops()){
-                            downloadImage(shop,shops);
-                        }
-
-                    }
-                });
-
-
+                for (AnyTopic anyTopic: anyTopics){
+                    downloadImage(anyTopic);
+                }
+                
             }
         }).start();
     }

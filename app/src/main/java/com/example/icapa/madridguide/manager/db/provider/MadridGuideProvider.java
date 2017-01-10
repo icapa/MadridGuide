@@ -9,17 +9,22 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
-import com.example.icapa.madridguide.manager.db.ShopDAO;
+import com.example.icapa.madridguide.manager.db.AnyTopicDAO;
+import com.example.icapa.madridguide.model.Activity;
+import com.example.icapa.madridguide.model.AnyTopic;
 import com.example.icapa.madridguide.model.Shop;
 
 public class MadridGuideProvider extends ContentProvider {
     public static final String MADRIDGUIDE_PROVIDER = "com.example.icapa.madridguide.provider";
     public static final Uri SHOPS_URI = Uri.parse("content://" + MADRIDGUIDE_PROVIDER + "/shops");
 
+    public static final Uri ACTIVITIES_URI = Uri.parse("content://"+MADRIDGUIDE_PROVIDER+"/activities");
+
     // Create the constants used to differentiate between the different URI requests.
     private static final int ALL_SHOPS = 1;
     private static final int SINGLE_SHOP = 2;
-
+    private static final int ALL_ACTIVITIES = 3;
+    private static final int SINGLE_ACTIVITY = 4;
 
     private static final UriMatcher uriMatcher;
     // Populate the UriMatcher object, where a URI ending in ‘elements’ will correspond to a request for all items, and ‘elements/[rowID]’ represents a single row.
@@ -27,6 +32,8 @@ public class MadridGuideProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "shops", ALL_SHOPS);
         uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "shops/#", SINGLE_SHOP);
+        uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "activities",ALL_ACTIVITIES);
+        uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "activities/#",SINGLE_ACTIVITY);
 
     }
 
@@ -40,18 +47,25 @@ public class MadridGuideProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
 
-        ShopDAO dao = new ShopDAO(getContext());
+        AnyTopicDAO dao = new AnyTopicDAO(getContext());
 
         Cursor cursor= null;
-
+        String rowID;
 
         switch (uriMatcher.match(uri)) {
             case SINGLE_SHOP :
-                String rowID = uri.getPathSegments().get(1);
+                rowID = uri.getPathSegments().get(1);
                 cursor = dao.queryCursor(Long.parseLong(rowID));
                 break;
             case ALL_SHOPS:
-                cursor = dao.queryCursor();
+                cursor = dao.queryCursor(Shop.TOPIC_NAME);
+                break;
+            case SINGLE_ACTIVITY:
+                rowID = uri.getPathSegments().get(1);
+                cursor = dao.queryCursor(Long.parseLong(rowID));
+                break;
+            case ALL_ACTIVITIES:
+                cursor = dao.queryCursor(Activity.TOPIC_NAME);
                 break;
             default: break;
         }
@@ -75,6 +89,12 @@ public class MadridGuideProvider extends ContentProvider {
             case ALL_SHOPS:
                 type = "vnd.android.cursor.dir/vnd.com.example.icapa.madridguide.provider";
                 break;
+            case ALL_ACTIVITIES:
+                type = "vnd.android.cursor.dirAct/vnd.com.example.icapa.madridguide.provider";
+                break;
+            case SINGLE_ACTIVITY:
+                type = "vnd.android.cursor.itemAct/vnd.com.example.icapa.madridguide.provider";
+                break;
             default:
                 break;
         }
@@ -85,12 +105,12 @@ public class MadridGuideProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
 
-        ShopDAO dao = new ShopDAO(getContext());
+        AnyTopicDAO dao = new AnyTopicDAO(getContext());
 
 
-        Shop shop = ShopDAO.getShopFromContentValues(contentValues);
+        AnyTopic anyTopic = AnyTopicDAO.getShopFromContentValues(contentValues);
 
-        long id = dao.insert(shop);
+        long id = dao.insert(anyTopic);
 
         // Construct and return the URI of the newly inserted row.
         if (id == -1) {
@@ -102,7 +122,9 @@ public class MadridGuideProvider extends ContentProvider {
             case ALL_SHOPS:
                 insertedUri = ContentUris.withAppendedId(SHOPS_URI, id);
                 break;
-
+            case ALL_ACTIVITIES:
+                insertedUri = ContentUris.withAppendedId(ACTIVITIES_URI,id);
+                break;
             default:
                 break;
         }
@@ -119,18 +141,26 @@ public class MadridGuideProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String where, String[] whereSelection) {
 
-        ShopDAO dao = new ShopDAO(getContext());
+        AnyTopicDAO dao = new AnyTopicDAO(getContext());
 
 
         int deleteCount=0;
+        String rowID;
 
         // If this is a row URI, limit the deletion to the specified row.
         switch (uriMatcher.match(uri)) {
             case SINGLE_SHOP:
-                String rowID = uri.getPathSegments().get(1);
+                rowID = uri.getPathSegments().get(1);
+                deleteCount=dao.delete(Long.parseLong(rowID));
+                break;
+            case SINGLE_ACTIVITY:
+                rowID = uri.getPathSegments().get(1);
                 deleteCount=dao.delete(Long.parseLong(rowID));
                 break;
             case ALL_SHOPS:
+                dao.deleteAll();
+                break;
+            case ALL_ACTIVITIES:    // Borro todo tambien
                 dao.deleteAll();
                 break;
             default:

@@ -3,16 +3,14 @@ package com.example.icapa.madridguide;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.net.Uri;
 import android.test.AndroidTestCase;
 
 import com.example.icapa.madridguide.manager.db.DBConstants;
-import com.example.icapa.madridguide.manager.db.ShopDAO;
 import com.example.icapa.madridguide.manager.db.provider.MadridGuideProvider;
-import com.example.icapa.madridguide.model.Shop;
 
 @SuppressWarnings("deprecation")
 public class MadridGuideProviderTest extends AndroidTestCase {
+
     public void testQueryAllShops(){
         ContentResolver cr = getContext().getContentResolver();
         Cursor c = cr.query(MadridGuideProvider.SHOPS_URI, DBConstants.ALL_COLUMNS,null,null,null);
@@ -21,6 +19,13 @@ public class MadridGuideProviderTest extends AndroidTestCase {
 
     }
 
+    public void testQueryAllActivities(){
+        ContentResolver cr = getContext().getContentResolver();
+        Cursor c = cr.query(MadridGuideProvider.ACTIVITIES_URI,DBConstants.ALL_COLUMNS,null,null,null);
+        assertNotNull(c);
+
+    }
+    /*
     public void testInsertAShop(){
         ContentResolver cr = getContext().getContentResolver();
         Shop shop = new Shop(1,"Little shop of horrors!");
@@ -38,6 +43,7 @@ public class MadridGuideProviderTest extends AndroidTestCase {
         assertEquals(beforeCount+1,afterCount);
 
     }
+    */
     /*
     public void testDeleteAShop(){
         ContentResolver cr = getContext().getContentResolver();

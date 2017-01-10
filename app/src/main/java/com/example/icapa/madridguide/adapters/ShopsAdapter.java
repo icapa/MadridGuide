@@ -9,22 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.icapa.madridguide.R;
-import com.example.icapa.madridguide.model.Shop;
-import com.example.icapa.madridguide.model.Shops;
+import com.example.icapa.madridguide.model.AnyTopic;
+import com.example.icapa.madridguide.model.AnyTopics;
 import com.example.icapa.madridguide.views.OnElementClick;
 import com.example.icapa.madridguide.views.ShopRowViewHolder;
 
 public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
     private final LayoutInflater layoutInflater;
-    private final Shops mShops;
+    private AnyTopics anyTopics = null;
 
 
-    private OnElementClick<Shop> listener;
+    private OnElementClick<AnyTopic> listener;
 
 
 
-    public ShopsAdapter(Shops shops, Context context) {
-        mShops = shops;
+    public ShopsAdapter(final AnyTopics anyTopics, Context context) {
+        this.anyTopics = anyTopics;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
@@ -37,14 +37,14 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
 
     @Override
     public void onBindViewHolder(ShopRowViewHolder row, final int position) {
-        final Shop shop = mShops.get(position);
-        row.setShop(shop);
+        final AnyTopic anyTopic = anyTopics.get(position);
+        row.setAnyTopic(anyTopic);
 
         row.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (ShopsAdapter.this.listener != null){
-                    listener.clickedOn(shop,position);
+                    listener.clickedOn(anyTopic,position);
                 }
             }
         });
@@ -53,7 +53,7 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
 
     @Override
     public int getItemCount() {
-        return (int)mShops.size();
+        return (int)anyTopics.size();
     }
 
     public void setOnElementClickListener(@NonNull final OnElementClick listener){

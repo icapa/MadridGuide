@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shops implements IShopsIterable,IShopsUpdatable {
+public class Shops implements IShopsIterable,IShopsUpdatable,ITopicsIterable{
 
     List<Shop> mShops;
 
@@ -37,6 +37,15 @@ public class Shops implements IShopsIterable,IShopsUpdatable {
     @Override
     public Shop get(long index) {
         return mShops.get((int)index);
+    }
+
+    @Override
+    public List<AnyTopic> allAnyTopics() {
+        List<AnyTopic> anyTopics = new ArrayList<>();
+        for (Shop shop: mShops){
+            anyTopics.add(shop);
+        }
+        return anyTopics;
     }
 
     @Override

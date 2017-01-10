@@ -17,6 +17,12 @@ public class ShopEntityShopMapper {
             shop.setDescription(entity.getDescriptionEs());
             shop.setLogoImgUrl(entity.getLogoImg());
             //... continuar con mapeo
+            shop.setUrl(entity.getUrl());
+            shop.setLongitude(entity.getLongitude());
+            shop.setLatitude(entity.getLatitude());
+            shop.setAddress(entity.getAddress());
+            shop.setImageUrl(entity.getImg());
+
             result.add(shop);
         }
         return result;

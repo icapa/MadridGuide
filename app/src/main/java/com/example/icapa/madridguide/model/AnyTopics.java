@@ -21,7 +21,7 @@ public class AnyTopics implements ITopicsIterable,ITopicsUpdatable {
         return build(new ArrayList<AnyTopic>());
     }
 
-    private AnyTopics(List<AnyTopic> anyTopics) {
+    public AnyTopics(List<AnyTopic> anyTopics) {
         mAnyTopics = anyTopics;
     }
 

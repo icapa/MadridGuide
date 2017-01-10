@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.icapa.madridguide.R;
-import com.example.icapa.madridguide.model.Shop;
+import com.example.icapa.madridguide.model.AnyTopic;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
@@ -27,13 +27,13 @@ public class ShopRowViewHolder extends RecyclerView.ViewHolder {
         logoImageView = (ImageView) rowShop.findViewById(R.id.row_shop_logo);
     }
 
-    public void setShop(final @NonNull  Shop shop){
-        if (shop == null) {
+    public void setAnyTopic(final @NonNull AnyTopic anyTopic){
+        if (anyTopic == null) {
             return;
         }
-        nameTextView.setText(shop.getName());
+        nameTextView.setText(anyTopic.getName());
         Picasso.with(context.get())
-                .load(shop.getLogoImgUrl())
+                .load(anyTopic.getLogoImgUrl())
                 .placeholder(android.R.drawable.ic_dialog_email)
                 .into(logoImageView);
     }

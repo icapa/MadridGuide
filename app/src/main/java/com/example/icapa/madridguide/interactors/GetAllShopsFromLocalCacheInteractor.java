@@ -2,8 +2,6 @@ package com.example.icapa.madridguide.interactors;
 
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 
 import com.example.icapa.madridguide.manager.db.ShopDAO;
 import com.example.icapa.madridguide.model.Shop;
@@ -37,14 +35,3 @@ public class GetAllShopsFromLocalCacheInteractor {
     }
 }
 
-class MainThread {
-    public static void run (final Runnable runnable){
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                runnable.run();
-            }
-        });
-    }
-}
