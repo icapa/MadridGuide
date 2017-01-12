@@ -30,9 +30,9 @@ public class MadridGuideProvider extends ContentProvider {
     // Populate the UriMatcher object, where a URI ending in ‘elements’ will correspond to a request for all items, and ‘elements/[rowID]’ represents a single row.
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "shops", ALL_SHOPS);
+        uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "shops/", ALL_SHOPS);
         uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "shops/#", SINGLE_SHOP);
-        uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "activities",ALL_ACTIVITIES);
+        uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "activities/",ALL_ACTIVITIES);
         uriMatcher.addURI(MADRIDGUIDE_PROVIDER, "activities/#",SINGLE_ACTIVITY);
 
     }
@@ -50,7 +50,8 @@ public class MadridGuideProvider extends ContentProvider {
         AnyTopicDAO dao = new AnyTopicDAO(getContext());
 
         Cursor cursor= null;
-        String rowID;
+        String rowID=null;
+        String matchWord=null;
 
         switch (uriMatcher.match(uri)) {
             case SINGLE_SHOP :
@@ -58,14 +59,25 @@ public class MadridGuideProvider extends ContentProvider {
                 cursor = dao.queryCursor(Long.parseLong(rowID));
                 break;
             case ALL_SHOPS:
-                cursor = dao.queryCursor(Shop.TOPIC_NAME);
+                if (s!=null && s.length()>0){
+                    cursor = dao.queryCursor(Shop.TOPIC_NAME,"%"+s);
+                }else{
+                    cursor = dao.queryCursor(Shop.TOPIC_NAME);
+                }
+
                 break;
             case SINGLE_ACTIVITY:
                 rowID = uri.getPathSegments().get(1);
                 cursor = dao.queryCursor(Long.parseLong(rowID));
                 break;
             case ALL_ACTIVITIES:
-                cursor = dao.queryCursor(Activity.TOPIC_NAME);
+
+                if (s!=null && s.length()>0){
+                    cursor = dao.queryCursor(Activity.TOPIC_NAME,s);
+                }
+                else{
+                    cursor = dao.queryCursor(Activity.TOPIC_NAME);
+                }
                 break;
             default: break;
         }

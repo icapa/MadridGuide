@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="@dimen/map_shop_callout_width"
+              tools:background="@color/colorPrimary"
+              android:layout_gravity="center"
+              android:layout_height="@dimen/map_shop_callout_height"
+        android:padding="@dimen/map_shop_callout_padding"
+    >
+
+    <ImageView
+        android:id="@+id/map_shop_callout_logo"
+        android:layout_width="@dimen/map_shop_callout_logo_width"
+        tools:background="@color/colorPrimaryDark"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        tools:src="@drawable/madrid_guide"
+        android:layout_height="@dimen/map_shop_callout_logo_height"/>
+    <TextView
+        android:id="@+id/map_shop_callout_name"
+        android:layout_width="@dimen/map_shop_callout_width"
+        tools:text="Prueba de tienda"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

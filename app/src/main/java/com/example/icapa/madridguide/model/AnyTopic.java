@@ -11,8 +11,8 @@ public  class AnyTopic implements Serializable{
     private String address;
     private String url;
     private String description;
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
     private String type;
 
 
@@ -98,21 +98,21 @@ public  class AnyTopic implements Serializable{
         return this;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public AnyTopic setLatitude(float latitude) {
+    public AnyTopic setLatitude(double latitude) {
 
         this.latitude = latitude;
         return this;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public AnyTopic setLongitude(float longitude) {
+    public AnyTopic setLongitude(double longitude) {
 
         this.longitude = longitude;
         return this;

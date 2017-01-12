@@ -12,8 +12,8 @@ public class ActivityEntity {
     @SerializedName("url") private String url;
     @SerializedName("description_es") private String descriptionEs;
     @SerializedName("description_en") private String descriptionEn;
-    @SerializedName("latitude") private long latitude;
-    @SerializedName("longitude") private long longitude;
+    @SerializedName("gps_lat") private double latitude;
+    @SerializedName("gps_lon") private double longitude;
 
 
     public Long getId() {
@@ -48,11 +48,11 @@ public class ActivityEntity {
         return descriptionEn;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 }

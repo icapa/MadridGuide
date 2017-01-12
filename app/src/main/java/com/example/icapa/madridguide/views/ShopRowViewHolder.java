@@ -18,6 +18,8 @@ public class ShopRowViewHolder extends RecyclerView.ViewHolder {
 
     private TextView nameTextView;
     private ImageView logoImageView;
+    private ImageView backgroundImageView;
+
     private WeakReference<Context> context;
     public ShopRowViewHolder(View rowShop) {
         super(rowShop);
@@ -25,6 +27,8 @@ public class ShopRowViewHolder extends RecyclerView.ViewHolder {
 
         nameTextView = (TextView) rowShop.findViewById(R.id.row_shop_name);
         logoImageView = (ImageView) rowShop.findViewById(R.id.row_shop_logo);
+        backgroundImageView = (ImageView) rowShop.findViewById(R.id.row_shop_background_image);
+
     }
 
     public void setAnyTopic(final @NonNull AnyTopic anyTopic){
@@ -36,5 +40,8 @@ public class ShopRowViewHolder extends RecyclerView.ViewHolder {
                 .load(anyTopic.getLogoImgUrl())
                 .placeholder(android.R.drawable.ic_dialog_email)
                 .into(logoImageView);
+        Picasso.with(context.get())
+                .load(anyTopic.getImageUrl())
+                .into(backgroundImageView);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.icapa.madridguide.activities;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.example.icapa.madridguide.interactors.CacheAllImagesInteractor;
 import com.example.icapa.madridguide.interactors.CacheAllShopsInteractor;
 import com.example.icapa.madridguide.interactors.GetAllActivitiesInteractor;
 import com.example.icapa.madridguide.interactors.GetAllShopsInteractor;
+import com.example.icapa.madridguide.manager.db.AnyTopicDAO;
 import com.example.icapa.madridguide.manager.preferences.InvalidateCacheCalendar;
 import com.example.icapa.madridguide.model.Activities;
 import com.example.icapa.madridguide.model.Shops;
@@ -28,9 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int TOTAL_TASK_TO_PERFORM=2;
 
 
-    @BindView(R.id.activity_main_test_button)
-    Button testButton;
-
     @BindView(R.id.activity_main_shops_button)
     Button viewShopsButton;
     @BindView(R.id.activity_main_activitites_button)
@@ -39,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     Object semaphoreObject = new Object();
 
     private int taskLoadNumber = TOTAL_TASK_TO_PERFORM;
+
+    ProgressDialog progressDownloading=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void getTopicsData(){
         if (CacheIsOld(this,new Date())){
-            testButton.setText("Downloading....");
+            progressDownloading = new ProgressDialog(this);
+            progressDownloading.setMessage(getString(R.string.main_activity_progress_downloading));
+            progressDownloading.show();
+            FlushCacheData();
             initShopsData(new CacheAllImagesInteractor.CacheAllImagesInteractorResponse(){
                 @Override
                 public void response(boolean success) {
@@ -107,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
         }else{
             ActivateAllButtons();
         }
+    }
+
+    private void FlushCacheData() {
+        final AnyTopicDAO dao = new AnyTopicDAO(getApplicationContext());
+        dao.deleteAll();
     }
 
 
@@ -145,15 +154,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkTaskCompleteAndExit(){
         taskLoadNumber--;
-        testButton.setText("Paso" + taskLoadNumber);
         if (taskLoadNumber==0){
             ActivateAllButtons();
+            progressDownloading.dismiss();
         }
     }
 
     private void ActivateAllButtons() {
-        testButton.setText("OLE OLE");
         viewShopsButton.setEnabled(true);
         viewActivitiesButton.setEnabled(true);
+
     }
 }

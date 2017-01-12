@@ -1,22 +1,16 @@
 package com.example.icapa.madridguide;
 
-import android.database.Cursor;
 import android.test.AndroidTestCase;
-
-import com.example.icapa.madridguide.manager.db.ShopDAO;
-import com.example.icapa.madridguide.model.Shop;
-
-import java.util.List;
 
 
 public class ShopDAOTests extends AndroidTestCase {
 
-
+/*
     public static final String SHOP_TESTING_NAME = "Shop testing name";
     public static final String SHOP_TESTING_ADD = "AD 1";
 
     public void testCanInsertANewShop(){
-        final ShopDAO sut = new ShopDAO(getContext());
+        final AnyTopicDAO sut = new AnyTopicDAO(getContext());
         final int count = getCount(sut);
 
         final long id = insertTestShop(sut);
@@ -27,7 +21,7 @@ public class ShopDAOTests extends AndroidTestCase {
     }
 
     public void testCanDeleteAShop(){
-        final ShopDAO sut = new ShopDAO(getContext());
+        final AnyTopicDAO sut = new AnyTopicDAO(getContext());
 
 
         final long id = insertTestShop(sut);
@@ -42,7 +36,7 @@ public class ShopDAOTests extends AndroidTestCase {
     }
 
     public void testDeleteAll(){
-        final ShopDAO sut = new ShopDAO(getContext());
+        final AnyTopicDAO sut = new AnyTopicDAO(getContext());
         sut.deleteAll();
 
         final int count = getCount(sut);
@@ -77,17 +71,36 @@ public class ShopDAOTests extends AndroidTestCase {
         for (Shop shop: shopLists){
             assertTrue(shop.getName().length()>0);
         }
-
     }
 
-    private int getCount(ShopDAO sut) {
+    public void testLatitudeLongitude(){
+        final AnyTopicDAO sut = new AnyTopicDAO(getContext());
+        final int count = getCount(sut);
+
+        final long id = insertTestShop(sut);
+
+        AnyTopic myTopic = sut.query(id);
+        assertTrue(id>0);
+        assertTrue(count +1 == sut.queryCursor().getCount());
+        assertTrue(myTopic.getLatitude()>0.0);
+        assertTrue(myTopic.getLongitude()>0.0);
+    }
+
+
+
+
+    private int getCount(AnyTopicDAO sut) {
         final Cursor cursor = sut.queryCursor();
         return cursor.getCount();
     }
 
-    private long insertTestShop(ShopDAO sut) {
+    private long insertTestShop(AnyTopicDAO sut) {
         final Shop shop = (Shop) new Shop(1, SHOP_TESTING_NAME).setAddress(SHOP_TESTING_ADD);
+        shop.setLatitude(43.4614013);
+        shop.setLongitude(-3.8462423);
         return sut.insert(shop);
     }
+
+*/
 
 }

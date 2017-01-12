@@ -23,8 +23,50 @@ public class MadridGuideProviderTest extends AndroidTestCase {
         ContentResolver cr = getContext().getContentResolver();
         Cursor c = cr.query(MadridGuideProvider.ACTIVITIES_URI,DBConstants.ALL_COLUMNS,null,null,null);
         assertNotNull(c);
+    }
+
+    public void testQueryFilterActivities(){
+        String filter ="CANTABRIA";
+        ContentResolver cr = getContext().getContentResolver();
+
+
+
+
+        Cursor c = cr.query(MadridGuideProvider.ACTIVITIES_URI,
+                DBConstants.ALL_COLUMNS,
+                filter, null,null);
+        assertNotNull(c);
+        assertTrue(c.getCount()>0);
+    }
+
+
+/*
+    public void testFilterActivities(){
+
+        AnyTopicDAO dao = new AnyTopicDAO(getContext());
+
+
+        final String sa1 = "%CANTABRIA%";
+        Activity activity = new Activity(99,"CANTABRIA INFINITA");
+
+        long result = dao.insert(activity);
+
+        if (result > 0) {
+            ContentResolver cr = getContext().getContentResolver();
+            Cursor c = cr.query(
+                    MadridGuideProvider.ACTIVITIES_URI,
+                    DBConstants.ALL_COLUMNS,
+                    DBConstants.KEY_ANYTOPIC_NAME + " LIKE ?",
+                    new String[]{sa1},
+                    null);
+            // Lo borro
+            assertEquals(c.getCount(),1);
+            dao.delete(result);
+        }
+
 
     }
+    */
     /*
     public void testInsertAShop(){
         ContentResolver cr = getContext().getContentResolver();

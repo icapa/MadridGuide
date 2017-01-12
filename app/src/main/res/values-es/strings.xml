@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MadridGuide</string>
+    <string name="activity_main_shops_button_text">Tiendas</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hola fragmento vacio</string>
+    <string name="view_shops">Ver tiendas</string>
+    <string name="view_activities">Ver actividades</string>
+    <string name="main_activity_progress_downloading">Descargando datos...</string>
+</resources>

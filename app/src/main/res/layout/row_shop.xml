@@ -3,21 +3,36 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="@dimen/row_shop_height"
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+    <ImageView
+        android:id="@+id/row_shop_background_image"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        tools:src="@drawable/verino_small"
+        android:alpha="0.3"
+        android:scaleType="fitXY"
+        android:layout_height="@dimen/logo_background_heigth"/>
+
     <TextView
+        android:layout_alignLeft="@id/row_shop_background_image"
         android:id="@+id/row_shop_name"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/row_shop_text_height"
         android:layout_centerVertical="true"
         android:gravity="center"
+        android:textSize="@dimen/row_shop_text_size"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
         tools:text="La mejor tienda de Madrid "
         />
 
     <ImageView
+        tools:background="@color/colorPrimary"
         android:id="@+id/row_shop_logo"
+
         android:layout_width="@dimen/logo_dimension_width"
         android:layout_height="@dimen/logo_dimension_height"
         android:layout_centerVertical="true"

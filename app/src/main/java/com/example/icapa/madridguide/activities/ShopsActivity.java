@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -21,12 +22,22 @@ import com.example.icapa.madridguide.manager.db.provider.MadridGuideProvider;
 import com.example.icapa.madridguide.model.AnyTopic;
 import com.example.icapa.madridguide.model.AnyTopics;
 import com.example.icapa.madridguide.navigator.Navigator;
+import com.example.icapa.madridguide.util.MapsUtilities;
+import com.example.icapa.madridguide.views.MapShopWindowAdapter;
 import com.example.icapa.madridguide.views.OnElementClick;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.icapa.madridguide.util.Constants.latitudeMadrid;
+import static com.example.icapa.madridguide.util.Constants.longitudeMadrid;
 
 
-public class ShopsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ShopsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, GoogleMap.OnInfoWindowClickListener {
 
     public static final String TOPIC_TO_SHOW = "TOPIC_TO_SHOW";
     public static final int SHOW_SHOPS = 1;
@@ -37,6 +48,9 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     private ShopsFragment mShopsFragment;
     private MapFragment mMapFragment;
     private GoogleMap mGoogleMap;
+
+    private List<MarkerOptions> markersOptions = null;
+    private List<Marker> markers = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,26 +79,20 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
         }else{
             if (mGoogleMap != null) {
                 mGoogleMap.setMyLocationEnabled(true);
+                mGoogleMap.setInfoWindowAdapter(new
+                        MapShopWindowAdapter(this));
+                MapsUtilities.CenterMap(mGoogleMap, latitudeMadrid, longitudeMadrid);
+                mGoogleMap.setOnInfoWindowClickListener(this);
             }
         }
-        /*
-        if (whatToShow == SHOW_SHOPS) {
-            GetAllShopsFromLocalCacheInteractor interactor = new GetAllShopsFromLocalCacheInteractor();
-            interactor.execute(this, new GetAllShopsFromLocalCacheInteractor.OnGetAllShopsFromLocalCacheInteractor() {
-                @Override
-                public void completion(Shops shop) {
-                    mShopsFragment.setShops(shop);
-                }
-            });
-        }else{
 
-        }
-        */
 
         LoaderManager loaderManager = getSupportLoaderManager();
         loaderManager.initLoader(0,null,this);
 
     }
+
+
     /*
     // 1st attempt at async cursor load: works!
     public void getShops() {
@@ -120,6 +128,10 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
             contentProviderUri = MadridGuideProvider.ACTIVITIES_URI;
         }
 
+
+
+
+
         CursorLoader loader = new CursorLoader(this,
                 contentProviderUri,  // Uri
                 DBConstants.ALL_COLUMNS,        //projections
@@ -127,6 +139,9 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
                 null,                           // campos del where
                 null                            // order
                 );
+
+
+
         return loader;
     }
 
@@ -142,18 +157,53 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
             }
         });
         mShopsFragment.setTopics(anyTopics);
+        markersOptions = createMarkersFromTopics(anyTopics);
+        markers = MapsUtilities.PutAllPins(mGoogleMap,markersOptions);
     }
 
 
+    private List<MarkerOptions> createMarkersFromTopics(@NonNull final AnyTopics anyTopics) {
+        List<MarkerOptions> markerOptions = new ArrayList<>();
+        for (AnyTopic topic: anyTopics.allAnyTopics()){
+            markerOptions.add(MapsUtilities.GetMarkerFromPosition(
+                    topic.getLatitude(),topic.getLongitude(),topic.getName()));
+        }
+        return markerOptions;
+    }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 
+
     private int GetWhatToShow(){
         Intent intent = getIntent();
         int wts = intent.getIntExtra(ShopsActivity.TOPIC_TO_SHOW,SHOW_SHOPS);
         return wts;
+    }
+
+
+    public AnyTopic getTopicFromMarker(@NonNull final Marker marker){
+        int position;
+        position = markers.indexOf(marker);
+        if (position>=0) {
+            AnyTopic anyTopic = mShopsFragment.getAnyTopics().allAnyTopics()
+                    .get(position);
+            return anyTopic;
+        }
+        else{
+            return null;
+        }
+    }
+
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        AnyTopic topic = getTopicFromMarker(marker);
+        if (topic == null){
+            return;
+        }
+        Navigator.navigateFromShopsActivityToShopDetailActivity(this,topic);
     }
 }

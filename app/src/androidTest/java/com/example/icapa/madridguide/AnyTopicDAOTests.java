@@ -11,6 +11,8 @@ import com.example.icapa.madridguide.model.Shop;
 
 import java.util.List;
 
+import static com.example.icapa.madridguide.manager.db.DBConstants.KEY_ANYTOPIC_NAME;
+
 public class AnyTopicDAOTests extends AndroidTestCase {
 
 
@@ -55,6 +57,8 @@ public class AnyTopicDAOTests extends AndroidTestCase {
 
     private long insertTestShop(AnyTopicDAO sut) {
         final Shop shop = (Shop) new Shop(1, SHOP_TESTING_NAME).setAddress(SHOP_TESTING_ADD);
+        shop.setLatitude(43.4614013);
+        shop.setLongitude(-3.8462423);
         return sut.insert(shop);
     }
 
@@ -90,5 +94,34 @@ public class AnyTopicDAOTests extends AndroidTestCase {
         for (AnyTopic activity: activities){
             assertEquals(Activity.TOPIC_NAME,activity.getType());
         }
+    }
+
+    public void testLatitudeLongitude(){
+        final AnyTopicDAO sut = new AnyTopicDAO(getContext());
+        final int count = getCount(sut);
+
+        final long id = insertTestShop(sut);
+
+        AnyTopic myTopic = sut.query(id);
+        assertTrue(id>0);
+        assertTrue(myTopic.getLatitude()!=0.0);
+        assertTrue(myTopic.getLongitude()!=0.0);
+    }
+
+    public void testQueryFilterActivity(){
+        /*
+        SELECT NAME,TYPE from TABLE_ANYTOPIC WHERE TYPE='Activity' AND NAME LIKE "%CANTABRIA%";
+         */
+        final String realString="CANTABRIA INFINITA";
+        final AnyTopicDAO sut = new AnyTopicDAO(getContext());
+        Cursor c = sut.queryCursor("Activity","%CANTABRIA%");
+
+        assertTrue(c.getCount()>0 && c.getCount()<3);
+
+        String name = c.getString(c.getColumnIndex(KEY_ANYTOPIC_NAME));
+
+        assertTrue(name.equals(realString)) ;
+
+
     }
 }

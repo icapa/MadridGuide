@@ -7,8 +7,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.icapa.madridguide.R;
-import com.example.icapa.madridguide.model.Shop;
+import com.example.icapa.madridguide.model.AnyTopic;
 import com.example.icapa.madridguide.util.Constants;
+import com.example.icapa.madridguide.util.MapsUtilities;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -21,7 +22,18 @@ public class ShopDetailActivity extends AppCompatActivity {
     @BindView(R.id.activity_shop_detail_shop_logo_image)
     ImageView shopLogoImage;
 
-    Shop shop;
+    @BindView(R.id.activity_shop_detail_description)
+    TextView shopDescription;
+
+    @BindView(R.id.activity_shop_detail_address)
+    TextView shopAddress;
+
+    @BindView(R.id.activity_shop_detail_map)
+    ImageView shopMap;
+
+
+
+    AnyTopic mAnyTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +51,21 @@ public class ShopDetailActivity extends AppCompatActivity {
     private void getDetailShopFromCallingIntent() {
         Intent i = getIntent();
         if (i != null){
-            shop = (Shop) i.getSerializableExtra(Constants.INTENT_KEY_SHOP_DETAIL);
+            mAnyTopic = (AnyTopic) i.getSerializableExtra(Constants.INTENT_KEY_SHOP_DETAIL);
         }
     }
 
     private void updateUI() {
-        shopNameText.setText(shop.getName());
+        shopAddress.setText(mAnyTopic.getAddress());
+        shopDescription.setText(mAnyTopic.getDescription());
+        shopNameText.setText(mAnyTopic.getName());
         Picasso.with(this)
-                .load(shop.getLogoImgUrl())
+                .load(mAnyTopic.getLogoImgUrl())
                 .into(shopLogoImage);
+        Picasso.with(this)
+                .load(MapsUtilities.GetUrlImageFromMap(mAnyTopic.getLatitude(),mAnyTopic.getLongitude()))
+                .into(shopMap);
+
+
     }
 }

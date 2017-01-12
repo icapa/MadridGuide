@@ -1,14 +1,7 @@
 package com.example.icapa.madridguide.interactors;
 
 
-import android.content.Context;
-
-import com.example.icapa.madridguide.manager.db.ShopDAO;
-import com.example.icapa.madridguide.model.Shop;
-import com.example.icapa.madridguide.model.Shops;
-
-import java.util.List;
-
+/*
 public class GetAllShopsFromLocalCacheInteractor {
     public interface OnGetAllShopsFromLocalCacheInteractor{
        public void completion(Shops shop);
@@ -35,3 +28,4 @@ public class GetAllShopsFromLocalCacheInteractor {
     }
 }
 
+*/

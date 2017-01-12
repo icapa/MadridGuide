@@ -238,4 +238,13 @@ public class AnyTopicDAO implements DAOPersistable<AnyTopic> {
         }
         return c;
     }
+
+    public Cursor queryCursor(@NonNull final String type,@NonNull final String word){
+        Cursor c = db.query(TABLE_ANYTOPIC,ALL_COLUMNS,"TYPE = ? AND NAME LIKE ? ",
+                new String[]{type, "%"+ word + "%"},null,null,KEY_ANYTOPIC_ID);
+        if (c!=null && c.getCount()>0){
+            c.moveToFirst();
+        }
+        return c;
+    }
 }

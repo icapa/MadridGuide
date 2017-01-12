@@ -6,4 +6,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="view_shops">View shops</string>
     <string name="view_activities">View activities</string>
+    <string name="main_activity_progress_downloading">Downloading data...</string>
 </resources>
