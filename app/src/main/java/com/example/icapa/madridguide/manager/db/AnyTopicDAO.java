@@ -215,11 +215,14 @@ public class AnyTopicDAO implements DAOPersistable<AnyTopic> {
     @NonNull
     public static AnyTopics getAnyTopics(Cursor data) {
         List<AnyTopic> anyTopicList = new LinkedList<>();
-
-        while(data.moveToNext()){
+        if (data.isBeforeFirst()){
+            data.moveToNext();
+        }
+        do{
             AnyTopic anyTopic = AnyTopicDAO.getAnyTopic(data);
             anyTopicList.add(anyTopic);
-        }
+        }while(data.moveToNext());
+
         return AnyTopics.build(anyTopicList);
     }
 
@@ -241,7 +244,7 @@ public class AnyTopicDAO implements DAOPersistable<AnyTopic> {
 
     public Cursor queryCursor(@NonNull final String type,@NonNull final String word){
         Cursor c = db.query(TABLE_ANYTOPIC,ALL_COLUMNS,"TYPE = ? AND NAME LIKE ? ",
-                new String[]{type, "%"+ word + "%"},null,null,KEY_ANYTOPIC_ID);
+                new String[]{type, "%%"+ word + "%%"},null,null,KEY_ANYTOPIC_ID);
         if (c!=null && c.getCount()>0){
             c.moveToFirst();
         }

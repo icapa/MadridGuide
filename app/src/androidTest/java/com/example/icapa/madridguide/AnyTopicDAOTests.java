@@ -114,14 +114,43 @@ public class AnyTopicDAOTests extends AndroidTestCase {
          */
         final String realString="CANTABRIA INFINITA";
         final AnyTopicDAO sut = new AnyTopicDAO(getContext());
-        Cursor c = sut.queryCursor("Activity","%CANTABRIA%");
-
-        assertTrue(c.getCount()>0 && c.getCount()<3);
+        Cursor c = sut.queryCursor("Activity","CANTABRIA");
+        int cursorSize =c.getCount();
+        assertTrue(cursorSize>0 && cursorSize<3);
 
         String name = c.getString(c.getColumnIndex(KEY_ANYTOPIC_NAME));
 
         assertTrue(name.equals(realString)) ;
+    }
 
+    public void testQueryFilterFromAllData(){
+        final AnyTopicDAO sut = new AnyTopicDAO(getContext());
+        Cursor cAll = sut.queryCursor();
+        /* This test is just if the database
+        filled based on the data got from the
+         */
+        if (cAll.getCount()== 0){
+            return;
+        }
+        final int totalActivities = 14;
+        assertEquals(totalActivities, sut.queryCursor(Activity.TOPIC_NAME).getCount());
 
+        assertFalse(sut.queryCursor("FakeTyp").getCount()>0);
+
+        final String s1 = "Museo";
+        assertTrue(sut.queryCursor(Activity.TOPIC_NAME,s1).getCount()>0);
+
+        final String s2 = "Prado";
+        assertTrue(sut.queryCursor(Activity.TOPIC_NAME,s2).getCount()>0);
+
+        final String s3 = "PRADO";
+        assertTrue(sut.queryCursor(Activity.TOPIC_NAME,s3).getCount()>0);
+
+        final String fakeTopic = "Fake";
+        assertFalse(sut.queryCursor(Activity.TOPIC_NAME,fakeTopic).getCount()>0);
+
+        final String s4 = "tour";
+        int tourCount = 2;
+        assertEquals(tourCount,sut.queryCursor(Activity.TOPIC_NAME,s4).getCount());
     }
 }

@@ -1,6 +1,8 @@
 package com.example.icapa.madridguide.activities;
 
 import android.Manifest;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,6 +14,10 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.example.icapa.madridguide.R;
@@ -52,9 +58,59 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     private List<MarkerOptions> markersOptions = null;
     private List<Marker> markers = null;
 
+    private String filterName=null;
+
+    private LoaderManager loaderManager;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        filterName = getIntentFilterName(intent);
+        loaderManager.restartLoader(0,null,this);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.shops_activity_menu,menu);
+        configureSearchViewInActionBar(menu);
+        return true;
+
+    }
+
+    private void configureSearchViewInActionBar(Menu menu) {
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_item_search).getActionView();
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
+        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (TextUtils.isEmpty(newText)){
+                    filterName=null;
+                    loaderManager.restartLoader(0,null,ShopsActivity.this);
+                }
+                return false;
+            }
+        };
+        searchView.setOnQueryTextListener(textChangeListener);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_shops);
 
         whatToShow = GetWhatToShow();
@@ -64,6 +120,10 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
         mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
 
         mGoogleMap = mMapFragment.getMap();
+
+
+
+
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -85,11 +145,20 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
                 mGoogleMap.setOnInfoWindowClickListener(this);
             }
         }
+        Intent intent = getIntent();
+        filterName = getIntentFilterName(intent);
 
-
-        LoaderManager loaderManager = getSupportLoaderManager();
+        loaderManager = getSupportLoaderManager();
         loaderManager.initLoader(0,null,this);
 
+    }
+
+    private String getIntentFilterName(Intent intent) {
+        String query=null;
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            query = intent.getStringExtra(SearchManager.QUERY);
+        }
+        return query;
     }
 
 
@@ -128,19 +197,15 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
             contentProviderUri = MadridGuideProvider.ACTIVITIES_URI;
         }
 
-
-
-
+        mGoogleMap.clear();
 
         CursorLoader loader = new CursorLoader(this,
                 contentProviderUri,  // Uri
                 DBConstants.ALL_COLUMNS,        //projections
-                null,                           // where
+                filterName,                           // where
                 null,                           // campos del where
                 null                            // order
                 );
-
-
 
         return loader;
     }
@@ -148,7 +213,7 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        final AnyTopics anyTopics = AnyTopicDAO.getAnyTopics(data);
+        AnyTopics anyTopics = AnyTopicDAO.getAnyTopics(data);
 
         mShopsFragment.setListener(new OnElementClick<AnyTopic>() {
             @Override

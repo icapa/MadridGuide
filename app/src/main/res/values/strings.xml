@@ -7,4 +7,5 @@
     <string name="view_shops">View shops</string>
     <string name="view_activities">View activities</string>
     <string name="main_activity_progress_downloading">Downloading data...</string>
+    <string name="searchable_hint_text">Search topic</string>
 </resources>

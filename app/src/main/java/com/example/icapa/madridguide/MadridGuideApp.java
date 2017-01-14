@@ -3,8 +3,6 @@ package com.example.icapa.madridguide;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.icapa.madridguide.manager.db.ShopDAO;
-import com.example.icapa.madridguide.model.Shop;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -56,7 +54,7 @@ public class MadridGuideApp extends Application {
         */
 
     }
-
+    /*
     private void insertTestDataInDB() {
         ShopDAO dao = new ShopDAO(appContext.get());
         for (int i = 0; i < 20; i++) {
@@ -64,6 +62,7 @@ public class MadridGuideApp extends Application {
             dao.insert(shop);
         }
     }
+    */
 
     @Override
     public void onLowMemory() {
