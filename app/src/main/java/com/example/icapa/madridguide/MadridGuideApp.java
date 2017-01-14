@@ -54,15 +54,7 @@ public class MadridGuideApp extends Application {
         */
 
     }
-    /*
-    private void insertTestDataInDB() {
-        ShopDAO dao = new ShopDAO(appContext.get());
-        for (int i = 0; i < 20; i++) {
-            Shop shop = (Shop) new Shop(1,"Shop " + i).setLogoImgUrl("http://www.alfabetajuega.com/avatars/upload/e592406413e46cbf5b5508f3b86c3ffc_2506.jpg");
-            dao.insert(shop);
-        }
-    }
-    */
+
 
     @Override
     public void onLowMemory() {

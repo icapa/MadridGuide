@@ -162,30 +162,7 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
 
-    /*
-    // 1st attempt at async cursor load: works!
-    public void getShops() {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ShopDAO dao = new ShopDAO(ShopsActivity.this);
-
-                List<Shop> shopList = dao.query();
-                final Shops shops = Shops.build(shopList);
-
-                ShopsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mShopsFragment.setShops(shops);
-                    }
-                });
-
-            }
-        }).start();
-
-    }
-    */
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

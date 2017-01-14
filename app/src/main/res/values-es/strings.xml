@@ -7,4 +7,5 @@
     <string name="view_shops">Ver tiendas</string>
     <string name="view_activities">Ver actividades</string>
     <string name="main_activity_progress_downloading">Descargando datos...</string>
+    <string name="searchable_hint_text">Buscar temas</string>
 </resources>
