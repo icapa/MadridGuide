@@ -3,22 +3,28 @@ package com.example.icapa.madridguide.model.mappers;
 
 import com.example.icapa.madridguide.manager.net.ActivityEntity;
 import com.example.icapa.madridguide.model.Activity;
+import com.example.icapa.madridguide.util.Constants;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
 public class ActivityEntityActivityMapper {
+
+
+
     public List<Activity> map(List<ActivityEntity> activityEntities){
 
         List<Activity> result = new LinkedList<>();
 
-        String lan = Locale.getDefault().getDisplayLanguage();
+        String lan = Locale.getDefault().getLanguage();
+
+
 
         for (ActivityEntity entity: activityEntities){
             Activity activity = new Activity(entity.getId(),entity.getName());
             // Detect current lang
-            if (lan == "es") {
+            if (lan.equals(Constants.SPANISH_LANGUAGE)) {
                 activity.setDescription(entity.getDescriptionEs());
             }
             else{

@@ -20,8 +20,8 @@ public class MapsUtilities {
     private final static float zoomValue = 12.0f;
 
     private final static String BASE_URL_MAP="http://maps.googleapis.com/maps/api/staticmap?" +
-            " center=%.6f,%.6f&zoom=15&size=320x220&scale=2&markers=%%7Ccolor:0x9" +
-            " C7B14%%7C%.6f,%.6f";
+            "center=%.6f,%.6f&zoom=15&size=320x220&scale=2&markers=%%7Ccolor:0x9" +
+            "C7B14%%7C%.6f,%.6f";
 
 
     public static void CenterMap(@NonNull GoogleMap map,

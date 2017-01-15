@@ -3,6 +3,7 @@ package com.example.icapa.madridguide.model.mappers;
 
 import com.example.icapa.madridguide.manager.net.ShopEntity;
 import com.example.icapa.madridguide.model.Shop;
+import com.example.icapa.madridguide.util.Constants;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,13 +13,13 @@ public class ShopEntityShopMapper {
     public List<Shop> map(List<ShopEntity> shopEntities){
         List<Shop> result = new LinkedList<>();
 
-        String lan = Locale.getDefault().getDisplayLanguage();
+        String lan = Locale.getDefault().getLanguage();
 
         for (ShopEntity entity: shopEntities){
             Shop shop = new Shop(entity.getId(),entity.getName());
             // Detect current lang
 
-            if (lan == "es") {
+            if (lan.equals(Constants.SPANISH_LANGUAGE)) {
                 shop.setDescription(entity.getDescriptionEs());
             }
             else{

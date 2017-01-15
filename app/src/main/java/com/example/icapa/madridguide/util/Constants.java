@@ -9,5 +9,6 @@ public class Constants {
     public static final String INTENT_KEY_SHOP_DETAIL = appName + "INTENT_KEY_SHOP_DETAIL";
     public static final double latitudeMadrid=40.416775;
     public static final double longitudeMadrid = -3.703790;
+    public static final String SPANISH_LANGUAGE="es";
 
 }
